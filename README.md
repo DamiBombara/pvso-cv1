@@ -1,1 +1,0 @@
-When I see motivation
