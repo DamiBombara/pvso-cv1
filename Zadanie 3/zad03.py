@@ -9,7 +9,13 @@ def checkImage(img):
         print("Could not find the image!")
         return -1
 
-
+def saturated(sum_value):
+    if sum_value > 255:
+        sum_value = 255
+    if sum_value < 0:
+        sum_value = 0
+    return sum_value
+    
 def openCVfunction(argv):
     ddepth = cv.CV_16S
     kernel_size = 3
@@ -48,7 +54,7 @@ def gaussian_blur(img):
                    4 * gr[i + 1, j - 2] +  9 *  gr[i + 1, j - 1] + 12 *  gr[i + 1, j] +  9 * gr[i + 1, j + 1] + 4 * gr[i + 1, j + 2] + 
                    2 * gr[i + 2, j - 2] +  4 *  gr[i + 2, j - 1] +  5 *  gr[i + 2, j] +  4 * gr[i + 2, j + 1] + 2 * gr[i + 2, j + 2]) // 159
             
-            blur[i, j] = np.clip(sum, 0, 255)
+            blur[i, j] = saturated(sum)
 
     return blur
 
@@ -67,7 +73,7 @@ def LoG(image):
                         img[i     , j - 2] -     img[i + 2, j    ] -      img[i - 2, j    ] -     img[i - 1, j + 1] - img[i + 1 , j + 1] - 
                         img[i + 1 , j - 1] -     img[i - 1, j - 1] + 16 * img[i    , j    ])
             
-            laplaceOfGaussian[i, j] = np.clip(sum, 0, 255)
+            laplaceOfGaussian[i, j] = saturated(sum)
     
     cv.imshow("laplacian of gaussian", laplaceOfGaussian)
     cv.imwrite("laplacian_of_gaussian.png", laplaceOfGaussian)
